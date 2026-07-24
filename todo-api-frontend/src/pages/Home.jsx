@@ -65,13 +65,42 @@ export default function Home() {
     navigate(`/edit-task/${taskId}`);
   }
 
-  function handleDelete(taskId) {
-    // Swal.fire({
-    //   icon: "success",
-    //   title: "Status",
-    //   text: "Connected Successfully",
-    // });
-    console.log("Delete task:", taskId);
+  async function handleDelete(taskId) {
+    const result = await Swal.fire({
+      title: "Delete Task?",
+      text: "You won't be able to undo this action.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#16a34a",
+      cancelButtonColor: "#dc2626",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await api.delete(`/tasks/${taskId}`);
+
+      const updatedTasks = tasks.filter((task) => task._id !== taskId);
+      setTasks(updatedTasks);
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Task deleted successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to delete task.",
+      });
+
+      console.error(err);
+    }
   }
 
   return (
