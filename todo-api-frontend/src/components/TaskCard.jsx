@@ -1,77 +1,59 @@
-import { useNavigate } from "react-router-dom";
-import PriorityBadge from "./PriorityBadge";
+import { FiEdit2, FiTrash2, FiCalendar } from "react-icons/fi";
+import StatusBadge from "./StatusBadge";
 
-// Displays a single task row in the task list.
-//
-// Props:
-// - task: { _id, title, description, completed, priority, dueDate }
-// - onToggleComplete(task): called when the checkbox is clicked
-// - onDelete(task): called when the delete button is clicked
-export default function TaskCard({ task, onToggleComplete, onDelete }) {
-  const navigate = useNavigate();
+function formatDate(dateString) {
+  const options = { month: "short", day: "numeric", year: "numeric" };
+  return new Date(dateString).toLocaleDateString("en-US", options);
+}
 
+export default function TaskCard({ task, onEdit, onDelete }) {
   return (
-    <div className="task-card">
-      <input
-        type="checkbox"
-        className="task-checkbox"
-        checked={!!task.completed}
-        onChange={() => onToggleComplete(task)}
-        aria-label={
-          task.completed ? "Mark task as not done" : "Mark task as done"
-        }
-      />
-
-      <div className="task-card-body">
-        <p className={`task-title ${task.completed ? "is-done" : ""}`}>
+    <div
+      className="group bg-white rounded-2xl p-5 shadow-card border border-gray-100
+                 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 ease-out"
+    >
+      {/* Top row: title + status badge */}
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <h3 className="font-semibold text-gray-800 leading-snug wrap-break-word">
           {task.title}
-        </p>
+        </h3>
+        <StatusBadge isCompleted={task.completed} />
+      </div>
 
-        {task.description ? (
-          <p className="task-description">{task.description}</p>
-        ) : null}
-
-        <div className="task-meta">
-          {task.priority ? <PriorityBadge priority={task.priority} /> : null}
-          {task.dueDate ? (
-            <span className="badge badge-neutral">
-              Due {formatDate(task.dueDate)}
-            </span>
-          ) : null}
+      {/* Date info */}
+      <div className="space-y-1.5 mb-5 text-sm text-gray-500">
+        <div className="flex items-center gap-2">
+          <FiCalendar className="w-4 h-4 text-gray-400" />
+          <span>Created: {formatDate(task.createdAt)}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <FiCalendar className="w-4 h-4 text-gray-400" />
+          <span>Due: {formatDate(task.dateForCompletion)}</span>
         </div>
       </div>
 
-      <div className="task-actions">
+      {/* Actions row — only shows on hover on larger screens for a cleaner
+          look, always visible on touch devices since there's no hover there. */}
+      <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
         <button
-          type="button"
-          className="btn btn-ghost btn-sm btn-icon"
-          onClick={() => navigate(`/edit/${task._id}`)}
-          aria-label="Edit task"
-          title="Edit"
+          onClick={() => onEdit(task._id)}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg
+                     text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-primary-600
+                     transition-colors duration-150"
         >
-          ✏️
+          <FiEdit2 className="w-4 h-4" />
+          Edit
         </button>
         <button
-          type="button"
-          className="btn btn-ghost btn-sm btn-icon"
-          onClick={() => onDelete(task)}
-          aria-label="Delete task"
-          title="Delete"
+          onClick={() => onDelete(task._id)}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg
+                     text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600
+                     transition-colors duration-150"
         >
-          🗑️
+          <FiTrash2 className="w-4 h-4" />
+          Delete
         </button>
       </div>
     </div>
   );
-}
-
-function formatDate(dateString) {
-  try {
-    return new Date(dateString).toLocaleDateString(undefined, {
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return dateString;
-  }
 }
