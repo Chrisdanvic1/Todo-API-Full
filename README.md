@@ -6,21 +6,10 @@ This application allows users to create, view, update, and delete tasks through 
 
 ---
 
-## ✨ Features
+## 🚀 Live Demo
 
-- ✅ Create new tasks
-- 📋 View all tasks
-- 🔍 View a single task
-- ✏️ Update existing tasks
-- 🗑️ Delete tasks with confirmation
-- ✔ Mark tasks as completed
-- ⏳ Loading spinner while fetching data
-- 🔔 SweetAlert2 success and error notifications
-- 📅 Due date support
-- 🛡 Backend validation and error handling
-- 💾 MongoDB data persistence
-
----
+- **Frontend:** https://todo-api-full.vercel.app
+- **Backend API:** https://todo-api-full.onrender.com
 
 # 📸 Screenshots
 
@@ -45,6 +34,22 @@ This application allows users to create, view, update, and delete tasks through 
 ## Delete Confirmation
 
 ![Delete Confirmation](./screenshots/delete-confirmation.png)
+
+---
+
+## ✨ Features
+
+- ✅ Create new tasks
+- 📋 View all tasks
+- 🔍 View a single task
+- ✏️ Update existing tasks
+- 🗑️ Delete tasks with confirmation
+- ✔ Mark tasks as completed
+- ⏳ Loading spinner while fetching data
+- 🔔 SweetAlert2 success and error notifications
+- 📅 Due date support
+- 🛡 Backend validation and error handling
+- 💾 MongoDB data persistence
 
 ---
 
@@ -107,7 +112,7 @@ Task-Manager
 ## Clone the repository
 
 ```bash
-git clone https://github.com/Chrisdanvic1/task-manager.git
+git clone https://github.com/Chrisdanvic1/todo-api-full.git
 ```
 
 ---
@@ -117,7 +122,7 @@ git clone https://github.com/Chrisdanvic1/task-manager.git
 Navigate into the backend folder.
 
 ```bash
-cd server
+cd todo-api-mongoDB
 ```
 
 Install dependencies.
@@ -146,7 +151,7 @@ npm run dev
 Navigate into the frontend folder.
 
 ```bash
-cd client
+cd todo-api-frontend
 ```
 
 Install dependencies.
@@ -229,14 +234,6 @@ Building this project helped me strengthen my understanding of:
 GitHub
 
 https://github.com/Chrisdanvic1
-
-LinkedIn
-
-(Add your LinkedIn URL)
-
-Portfolio
-
-(Add your Portfolio URL)
 
 ---
 

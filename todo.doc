@@ -1,0 +1,19 @@
+## Client-side validation
+Show "Title must be at least 5 characters" before sending to the backend.
+
+## Better error handling
+Instead of showing only HTTP status codes, display the backend's actual error message in SweetAlert.
+
+
+## Loading states
+Show a loader on Create, Update, and Delete buttons while the request is in progress.
+
+
+## Empty states
+Show "No tasks found" when the list is empty.
+
+## Authentication
+Protect routes so only logged-in users can access their tasks.
+
+## Responsive polish
+Fine-tune spacing and layout on mobile.
