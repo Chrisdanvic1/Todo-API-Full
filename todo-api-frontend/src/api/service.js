@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:5500/api/v1",
+  baseURL: "https://todo-api-full.onrender.com/api/v1",
 });

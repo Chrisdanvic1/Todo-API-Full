@@ -11,7 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://todo-api-full.vercel.app/"],
+    credentials: true,
   }),
 );
 app.use(express.urlencoded({ extended: false }));
@@ -24,10 +25,10 @@ app.use("/api/v1/auth", authRouter);
 app.get("/", (req, res) => {
   res.send("Welcome to Todo API");
 });
-
+// const PORT = process.env.PORT || 5500;
 app.listen(PORT, async () => {
   //   window.alert("Todo API is running");
-  console.log(`Todo API is running on http://localhost:${PORT}`);
+  console.log(`Todo API is running on http://localhost:${PORT || 5500}`);
 
   await connecToDatabase();
 });
