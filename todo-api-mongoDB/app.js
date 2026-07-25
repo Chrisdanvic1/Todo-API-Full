@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://todo-api-full.vercel.app/"],
+    origin: ["http://localhost:5173", "https://todo-api-full.vercel.app"],
     credentials: true,
   }),
 );
