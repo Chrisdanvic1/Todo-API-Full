@@ -1,12 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import TaskForm from "../components/TaskForm";
+import api from "../api/service";
+import Swal from "sweetalert2";
 
 export default function CreateTask() {
   const navigate = useNavigate();
 
-  function handleSubmit(formValues) {
-    console.log("New task submitted:", formValues);
-    navigate("/");
+  async function handleSubmit(formValues) {
+    try {
+      const response = await api.post("/tasks", formValues);
+      console.log(response);
+
+      Swal.fire({
+        icon: "success",
+        title: "Created",
+        text: "Task Created successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate("/");
+    } catch (err) {
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `${err.message}`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      // navigate("/");
+    }
   }
 
   function handleCancel() {

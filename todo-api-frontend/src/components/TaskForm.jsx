@@ -1,25 +1,3 @@
-/**
- * TaskForm.jsx
- * ------------------------------------------------------------
- * Shared form UI used by both the "Create Task" and "Edit Task"
- * pages, since they look identical apart from a few text labels
- * and starting values.
- *
- * IMPORTANT: This component only manages its OWN input state
- * (so the inputs are typeable / controlled). It does NOT send
- * anything to a server. The `onSubmit` prop is just a plain
- * function passed down from the page — wire it up to your real
- * API call later (e.g. inside CreateTask.jsx / EditTask.jsx).
- *
- * Props:
- *   - heading: string shown at the top of the card ("Create a new task")
- *   - subheading: small helper text under the heading
- *   - submitLabel: text on the submit button ("Create Task" / "Update Task")
- *   - initialTitle / initialDueDate: used to prefill fields on the Edit page
- *   - onSubmit: called with { title, dueDate } when the form is submitted
- *   - onCancel: called when the Cancel button is clicked
- */
-
 import { useState } from "react";
 import { FiCheckSquare } from "react-icons/fi";
 import Button from "./Button";
@@ -29,31 +7,24 @@ export default function TaskForm({
   subheading,
   submitLabel,
   initialTitle = "",
-  initialDueDate = "",
+  initialDateForCompletion = "",
+  // initialCompleted = false,
   onSubmit,
   onCancel,
 }) {
-  // Local UI state for the two form fields. This is just so the
-  // inputs behave like normal editable text fields — it is NOT
-  // connected to any backend or global state.
   const [title, setTitle] = useState(initialTitle);
-  const [dueDate, setDueDate] = useState(initialDueDate);
+  const [dateForCompletion, setDateForCompletion] = useState(
+    initialDateForCompletion,
+  );
 
   function handleSubmit(e) {
-    e.preventDefault(); // stop the browser's default full-page-reload submit
+    e.preventDefault();
 
-    // ---------------------------------------------------------
-    // BACKEND INTEGRATION POINT
-    // Replace this with your actual API call, e.g.:
-    //   await axios.post("/api/tasks", { title, dueDate })
-    // For now we just hand the values up to whichever page
-    // rendered this form, via the onSubmit prop.
-    // ---------------------------------------------------------
-    if (onSubmit) onSubmit({ title, dueDate });
+    if (onSubmit) onSubmit({ title, dateForCompletion });
   }
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-card border border-gray-100 p-6 sm:p-8">
+    <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-card border border-black p-6 sm:p-8">
       {/* Header */}
       <div className="flex flex-col items-center text-center mb-6">
         <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-3">
@@ -99,14 +70,22 @@ export default function TaskForm({
             id="dueDate"
             type="date"
             required
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
+            value={dateForCompletion}
+            onChange={(e) => setDateForCompletion(e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800
                        outline-none transition-colors duration-150
                        focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
           />
         </div>
-
+        {/* <div className="flex items-center justify-between pr-3">
+          <label htmlFor="completed">Completed: </label>
+          <input
+            type="checkbox"
+            id="completed"
+            checked={completed}
+            onChange={(e) => setCompleted(e.target.checked)}
+          />
+        </div> */}
         {/* Actions */}
         <div className="flex items-center gap-3 pt-2">
           <Button
