@@ -6,9 +6,10 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString("en-US", options);
 }
 
-export default function TaskCard({ task, onEdit, onDelete }) {
+export default function TaskCard({ key, task, onEdit, onDelete }) {
   return (
     <div
+      key={key}
       className="group bg-white rounded-2xl p-5 shadow-card border border-gray-100
                  hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 ease-out"
     >

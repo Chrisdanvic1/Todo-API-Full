@@ -55,8 +55,8 @@ export default function Home() {
 
     const matchesStatus =
       statusFilter === "all" ||
-      (statusFilter === "completed" && task.isCompleted) ||
-      (statusFilter === "pending" && !task.isCompleted);
+      (statusFilter === "completed" && task.completed) ||
+      (statusFilter === "pending" && !task.completed);
 
     return matchesSearch && matchesStatus;
   });

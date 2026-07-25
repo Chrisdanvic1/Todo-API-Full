@@ -6,9 +6,9 @@ import Swal from "sweetalert2";
 export default function CreateTask() {
   const navigate = useNavigate();
 
-  async function handleSubmit(formValues) {
+  async function handleSubmit(taskData) {
     try {
-      const response = await api.post("/tasks", formValues);
+      const response = await api.post("/tasks", taskData);
       console.log(response);
 
       Swal.fire({
@@ -27,6 +27,8 @@ export default function CreateTask() {
         timer: 1500,
         showConfirmButton: false,
       });
+
+      console.log(err);
       // navigate("/");
     }
   }

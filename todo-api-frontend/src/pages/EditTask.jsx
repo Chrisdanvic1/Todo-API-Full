@@ -1,53 +1,59 @@
-/**
- * EditTask.jsx
- * ------------------------------------------------------------
- * Page for editing an existing task. Reuses the same <TaskForm />
- * component as CreateTask.jsx, but passes initial values to
- * prefill the fields, and a different heading/button label.
- *
- * ---------------------------------------------------------
- * BACKEND INTEGRATION POINT
- * The `id` from the URL (e.g. /edit-task/3) tells you WHICH task
- * to load and update. Right now we just use placeholder values
- * instead of fetching the real task, e.g.:
- *
- *   const { id } = useParams();
- *   const [task, setTask] = useState(null);
- *   useEffect(() => {
- *     fetch(`/api/tasks/${id}`).then(res => res.json()).then(setTask);
- *   }, [id]);
- * ---------------------------------------------------------
- */
-
 import { useNavigate, useParams } from "react-router-dom";
 import TaskForm from "../components/TaskForm";
+import api from "../api/service";
+import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+import Loader from "../components/Loader.jsx";
 
 export default function EditTask() {
+  const [task, setTask] = useState(null);
   const navigate = useNavigate();
-  const { id } = useParams(); // task id from the URL, e.g. "3"
+  const { id } = useParams();
 
-  // Placeholder values standing in for a fetched task.
-  // Replace with real data fetched using the `id` above.
-  const placeholderTask = {
-    title: "Design the landing page hero section",
-    dueDate: "2026-07-28",
-  };
+  useEffect(() => {
+    async function load() {
+      const response = await api.get(`/tasks/${id}`);
+      setTask(response.data.data.tasks);
+    }
+    load();
+  }, [id]);
 
-  function handleSubmit(formValues) {
-    // formValues = { title, dueDate }
-    //
-    // ---------------------------------------------------------
-    // BACKEND INTEGRATION POINT
-    // Send the updated values to your Express API here, e.g.:
-    //   await axios.put(`/api/tasks/${id}`, formValues)
-    // ---------------------------------------------------------
-    console.log(`Task ${id} updated:`, formValues);
+  async function handleSubmit(formValues) {
+    const result = await Swal.fire({
+      title: "Update Task?",
+      // text: "You won't be able to undo this action.",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#16a34a",
+      cancelButtonColor: "#dc2626",
+      confirmButtonText: "Yes, update it!",
+      cancelButtonText: "Cancel",
+    });
 
-    navigate("/");
+    if (!result.isConfirmed) return;
+    try {
+      await api.patch(`/tasks/${id}`, formValues);
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated",
+        text: "Task Updated successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate("/");
+      console.log(`Task ${id} updated:`, formValues);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function handleCancel() {
     navigate("/");
+  }
+
+  if (!task) {
+    return <Loader message={"Loading task..."} />;
   }
 
   return (
@@ -56,8 +62,10 @@ export default function EditTask() {
         heading="Edit task"
         subheading="Update the details below and save your changes."
         submitLabel="Update Task"
-        initialTitle={placeholderTask.title}
-        initialDueDate={placeholderTask.dueDate}
+        initialTitle={task.title}
+        initialDateForCompletion={task.dateForCompletion.split("T")[0]}
+        initialCompleted={task.completed}
+        showCompleted={true}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
       />

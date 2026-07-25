@@ -5,10 +5,11 @@ import Button from "./Button";
 export default function TaskForm({
   heading,
   subheading,
-  submitLabel,
+  submitLabel = "submit",
   initialTitle = "",
   initialDateForCompletion = "",
-  // initialCompleted = false,
+  initialCompleted = false,
+  showCompleted = false,
   onSubmit,
   onCancel,
 }) {
@@ -16,11 +17,12 @@ export default function TaskForm({
   const [dateForCompletion, setDateForCompletion] = useState(
     initialDateForCompletion,
   );
+  const [completed, setCompleted] = useState(initialCompleted);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (onSubmit) onSubmit({ title, dateForCompletion });
+    if (onSubmit) onSubmit({ title, dateForCompletion, completed });
   }
 
   return (
@@ -77,15 +79,18 @@ export default function TaskForm({
                        focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
           />
         </div>
-        {/* <div className="flex items-center justify-between pr-3">
-          <label htmlFor="completed">Completed: </label>
-          <input
-            type="checkbox"
-            id="completed"
-            checked={completed}
-            onChange={(e) => setCompleted(e.target.checked)}
-          />
-        </div> */}
+        {showCompleted && (
+          <div className="flex items-center justify-between pr-3">
+            <label htmlFor="completed">Completed: </label>
+            <input
+              type="checkbox"
+              id="completed"
+              checked={completed}
+              onChange={(e) => setCompleted(e.target.checked)}
+            />
+          </div>
+        )}
+
         {/* Actions */}
         <div className="flex items-center gap-3 pt-2">
           <Button
